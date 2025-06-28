@@ -1,0 +1,59 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum Theme {
+  CREATIVE
+  MINIMAL
+  MODERN
+}
+
+model User {
+  id         String      @id @default(uuid())
+  fullName   String
+  username   String      @unique
+  email      String      @unique
+  password   String
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  portfolios Portfolio[]
+}
+
+model Portfolio {
+  id          String   @id @default(uuid())
+  title       String
+  fullName    String
+  description String?
+  jobTitle    String?
+  bio         String?
+  skills      String
+  email       String?
+  phone       String?
+  location    String?
+  githubUrl   String?
+  linkedinUrl String?
+  twitterUrl  String?
+  personalUrl String?
+  education   String?
+  workExp     String?
+  projects    String?
+  profileUrl  String?
+  theme       Theme    @default(MINIMAL)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String
+}
