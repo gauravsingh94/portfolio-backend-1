@@ -36,9 +36,9 @@ model Portfolio {
   title       String
   fullName    String
   description String?
-  jobTitle    String?
+  jobTitle    String
   bio         String?
-  skills      String
+  skills      String?
   email       String?
   phone       String?
   location    String?
@@ -49,7 +49,7 @@ model Portfolio {
   education   String?
   workExp     String?
   projects    String?
-  profileUrl  String?
+  profileUrl  String?  @db.LongText
   theme       Theme    @default(MINIMAL)
   isActive    Boolean  @default(true)
   createdAt   DateTime @default(now())

@@ -1,31 +1,34 @@
 import express, { Request, Response } from "express";
+import userRoutes from "./routes/user";
+import portfolioRoutes from "./routes/portfolio";
+import cors from "cors";
+import 'dotenv/config';
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
+
+// CORS configuration
+const corsOptions = {
+  origin: process.env.ALLOWED_ORIGINS?.split(',') || ['http://localhost:5173', 'http://localhost:3001'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+  optionsSuccessStatus: 204
+};
 
 // Middleware
-app.use(express.json());
+app.use(cors(corsOptions));
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // Routes
 app.get("/", (req: Request, res: Response) => {
-  res.send("Welcome to the TypeScript API!");
+  res.send("Welcome to Portfolio Pro API!");
 });
 
-app.get("/hello", (req: Request, res: Response) => {
-  res.json({ message: "Hello from TypeScript" });
-});
-
-app.post("/echo", (req: Request, res: Response) => {
-  res.json({ received: req.body });
-});
-
-app.put("/update", (req: Request, res: Response) => {
-  res.json({ updated: req.body });
-});
-
-app.delete("/delete/:id", (req: Request, res: Response) => {
-  res.json({ deletedId: req.params.id });
-});
+// Register routes
+app.use('/api/users', userRoutes);
+app.use('/api/portfolios', portfolioRoutes);
 
 // Start server
 app.listen(PORT, () => {
