@@ -10,7 +10,7 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -49,7 +49,7 @@ model Portfolio {
   education   String?
   workExp     String?
   projects    String?
-  profileUrl  String?  @db.LongText
+  profileUrl  String?  @db.Text
   theme       Theme    @default(MINIMAL)
   isActive    Boolean  @default(true)
   createdAt   DateTime @default(now())
